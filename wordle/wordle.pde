@@ -9,11 +9,11 @@ void setup() {
   dictionary = new StringList(loadStrings("words.txt"));
   StringList solutions = new StringList(loadStrings("solutions.txt"));
   
-  Node root = new Node(solutions, Strategy.ENTROPY);
-  //root.printInfo();
+  Node root = createTree(solutions, Strategy.ENTROPY, 10);
+  root.printInfo();
   println(root.guess);
 
-  int[] clues = {36, 61};
+  int[] clues = {14, 41};
   for (int clue : clues) {
     root = root.children[clue];
     println(root.guess);

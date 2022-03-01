@@ -33,3 +33,13 @@ static StringList[] splitSolutions(String guess, StringList solutions) {
   }
   return split;
 }
+
+Node createTree(StringList solutions, Strategy strat, int opt) {
+  println("Building tree ...");
+  int start = millis();
+  Node root = new Node(solutions, strat);
+  if (opt > 1) root.optimizeGuess(opt, strat);
+  int time = millis() - start;
+  println("Done in", nf(time/1000.0, 0, 2), "s");
+  return root;
+}

@@ -21,6 +21,26 @@ class Node {
     }
   }
   
+  void optimizeGuess(int attempts, Strategy strat) {
+    if (solutions.size() == 1) return;
+    String bestGuess = guess;
+    float bestScore = averageScore();
+    FloatDict ranks = strat.guessRanks(dictionary, solutions);
+    for (int i = 1; i < attempts; i++) {
+      init(ranks.key(i), strat);
+      float score = averageScore();
+      if (score < bestScore) {
+        bestScore = score;
+        bestGuess = guess;
+      }
+    }
+    init(bestGuess, strat);
+    for (Node child : children) {
+      if (child != null) child.optimizeGuess(attempts, strat);
+    }
+  }
+
+  
   int score(String solution) {
     int clue = clue(guess, solution);
     return 1 + (clue == CLUE_COUNT - 1 ? 0 : children[clue].score(solution));
