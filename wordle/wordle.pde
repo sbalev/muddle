@@ -6,8 +6,10 @@ static boolean evalBonus = false;
 StringList dictionary;
 
 void setup() {
+  size(1050, 375);
+  
   dictionary = new StringList(loadStrings("words.txt"));
   StringList solutions = new StringList(loadStrings("solutions.txt"));
   
-  printTop(10, solutions);
+  drawCorrelations(solutions);
 }
