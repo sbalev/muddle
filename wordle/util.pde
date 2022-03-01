@@ -22,3 +22,14 @@ static int clue(String guess, String solution) {
   }
   return score;
 }
+
+
+static StringList[] splitSolutions(String guess, StringList solutions) {
+  StringList[] split = new StringList[CLUE_COUNT];
+  for (String solution : solutions) {
+    int j = clue(guess, solution);
+    if (split[j] == null) split[j] = new StringList();
+    split[j].append(solution);
+  }
+  return split;
+}
