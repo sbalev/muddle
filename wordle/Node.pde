@@ -2,7 +2,7 @@ class Node {
   String guess;
   StringList solutions;
   Node[] children;
-  
+
   Node(StringList solutions, Strategy strat) {
     this.solutions = solutions;
     if (solutions.size() == 1) {
@@ -12,7 +12,7 @@ class Node {
     children = new Node[CLUE_COUNT - 1];
     init(strat.bestGuess(dictionary, solutions), strat);
   }
-  
+
   void init(String guess, Strategy strat) {
     this.guess = guess;
     StringList[] split = splitSolutions(guess, solutions);
@@ -20,7 +20,7 @@ class Node {
       children[j] = split[j] == null ? null : new Node(split[j], strat);
     }
   }
-  
+
   void optimizeGuess(int attempts, Strategy strat) {
     if (solutions.size() == 1) return;
     String bestGuess = guess;
@@ -40,7 +40,7 @@ class Node {
     }
   }
 
-  
+
   int score(String solution) {
     int clue = clue(guess, solution);
     return 1 + (clue == CLUE_COUNT - 1 ? 0 : children[clue].score(solution));
@@ -51,7 +51,7 @@ class Node {
     for (String solution : solutions) total += score(solution);
     return total;
   }
-  
+
   float averageScore() {
     return totalScore() / float(solutions.size());
   }
@@ -70,12 +70,12 @@ class Node {
     for (String solution : solutions) distrib[score(solution)]++;
     return distrib;
   }
-  
+
   void printInfo() {
     println(guess, solutions.size(), totalScore(), nf(averageScore(), 0, 4));
     println(scoreDistribution());
   }
-  
+
   JSONObject toJSON() {
     JSONObject jNode = new JSONObject();
     jNode.setString("guess", guess);
@@ -92,7 +92,7 @@ class Node {
     jNode.setJSONArray("children", jChildren);
     return jNode;
   }
-  
+
   Node(JSONObject jNode, StringList solutions) {
     guess = jNode.getString("guess");
     this.solutions = solutions;
@@ -105,5 +105,18 @@ class Node {
       int j = jChild.getInt("clue");
       children[j] = new Node(jChild.getJSONObject("child"), split[j]);
     }
+  }
+
+  IntList pathTo(String solution) {
+    IntList path = new IntList();
+    Node x = this;
+    int clue = clue(guess, solution);
+    while (clue != CLUE_COUNT - 1) {
+      path.append(clue);
+      x = x.children[clue];
+      clue = clue(x.guess, solution);
+    }
+    path.append(CLUE_COUNT - 1);
+    return path;
   }
 }

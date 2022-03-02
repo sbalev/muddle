@@ -7,19 +7,18 @@ StringList dictionary;
 Bot bot;
 
 void setup() {
-  size(400, 400);
+  size(600, 1000);
   dictionary = new StringList(loadStrings("words.txt"));
   StringList solutions = new StringList(loadStrings("solutions.txt"));
   
-  // Uncomment this to create and save a tree
+  // Uncomment this to create and save a tree. Don't forget to set evalBonus to true
   // Node root = createTree(solutions, Strategy.ENTROPY, 10);
   // saveTree(root, "data/rootENTROPY10.json");
   
   Node root = loadTree("rootENTROPY10.json", solutions);
   root.printInfo();
   
-  bot = new Bot(root.children[0].children[0]);
-  println(bot.possibleClues);
+  bot = new Bot(root);
   bot.display();
 }
 
