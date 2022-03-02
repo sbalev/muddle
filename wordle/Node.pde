@@ -75,4 +75,35 @@ class Node {
     println(guess, solutions.size(), totalScore(), nf(averageScore(), 0, 4));
     println(scoreDistribution());
   }
+  
+  JSONObject toJSON() {
+    JSONObject jNode = new JSONObject();
+    jNode.setString("guess", guess);
+    if (solutions.size() == 1) return jNode;
+    JSONArray jChildren = new JSONArray();
+    for (int j = 0; j < CLUE_COUNT - 1; j++) {
+      if (children[j] != null) {
+        JSONObject jChild = new JSONObject();
+        jChild.setInt("clue", j);
+        jChild.setJSONObject("child", children[j].toJSON());
+        jChildren.append(jChild);
+      }
+    }
+    jNode.setJSONArray("children", jChildren);
+    return jNode;
+  }
+  
+  Node(JSONObject jNode, StringList solutions) {
+    guess = jNode.getString("guess");
+    this.solutions = solutions;
+    if (solutions.size() == 1) return;
+    children = new Node[CLUE_COUNT - 1];
+    JSONArray jChildren = jNode.getJSONArray("children");
+    StringList[] split = splitSolutions(guess, solutions);
+    for (int i = 0; i < jChildren.size(); i++) {
+      JSONObject jChild = jChildren.getJSONObject(i);
+      int j = jChild.getInt("clue");
+      children[j] = new Node(jChild.getJSONObject("child"), split[j]);
+    }
+  }
 }

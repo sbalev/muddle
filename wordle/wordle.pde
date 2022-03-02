@@ -9,10 +9,16 @@ void setup() {
   dictionary = new StringList(loadStrings("words.txt"));
   StringList solutions = new StringList(loadStrings("solutions.txt"));
   
-  Node root = createTree(solutions, Strategy.ENTROPY, 10);
+  /*int opt = 10;
+  for (Strategy strat : Strategy.values()) {
+    println(strat);
+    Node root = createTree(solutions, strat, opt);
+    root.printInfo();
+    saveTree(root, "data/root" + strat + opt + ".json");
+  }*/
+  
+  Node root = loadTree("rootENTROPY10.json", solutions);
   root.printInfo();
-  println(root.guess);
-
   int[] clues = {14, 41};
   for (int clue : clues) {
     root = root.children[clue];

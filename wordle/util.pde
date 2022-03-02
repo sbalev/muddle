@@ -43,3 +43,12 @@ Node createTree(StringList solutions, Strategy strat, int opt) {
   println("Done in", nf(time/1000.0, 0, 2), "s");
   return root;
 }
+
+void saveTree(Node root, String fileName) {
+  saveJSONObject(root.toJSON(), fileName, "compact");
+}
+
+Node loadTree(String fileName, StringList solutions) {
+  JSONObject jRoot = loadJSONObject(fileName);
+  return new Node(jRoot, solutions);
+}
