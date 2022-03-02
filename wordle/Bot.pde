@@ -10,13 +10,12 @@ class Bot {
     this.root = currentNode = root;
     path = new IntList();
     possibleClues = new IntList();
-    initClues();
-    pos = 0;
+    initCurrent();
     smallFont = createFont("DejaVu Sans Mono", CELL_SIZE / 2);
     bigFont = createFont("DejaVu Sans Mono", CELL_SIZE);
   }
 
-  void initClues() {
+  void initCurrent() {
     possibleClues.clear();
     if (currentNode.children != null) {
       for (int clue = 0; clue < CLUE_COUNT - 1; clue++) {
@@ -27,6 +26,7 @@ class Bot {
       possibleClues.append(CLUE_COUNT - 1);
     }
     currentClue = possibleClues.get(0);
+    pos = 0;
   }
 
   void changeCurrentClue(boolean down) {
@@ -53,8 +53,17 @@ class Bot {
     if (currentClue == CLUE_COUNT - 1) return;
     path.append(currentClue);
     currentNode = currentNode.children[currentClue];
-    initClues();
-    pos = 0;
+    initCurrent();
+  }
+  
+  void back() {
+    if (currentNode == root) return;
+    path.remove(path.size() - 1);
+    currentNode = root;
+    for (int clue : path) {
+      currentNode = currentNode.children[clue];
+    }
+    initCurrent();
   }
 
   void display() {
@@ -131,6 +140,8 @@ class Bot {
   void keyPressed() {
     if (key == ENTER || key == RETURN) {
       changeCurrentNode();
+    } else if (key == BACKSPACE) {
+      back();
     } else if (key == CODED) {
       switch (keyCode) {
       case UP:
