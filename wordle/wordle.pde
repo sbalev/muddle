@@ -1,28 +1,32 @@
 import java.util.*;
 
 // set this to true when building your trees and to false when playing
-static boolean evalBonus = true;
+static boolean evalBonus = false;
 
 StringList dictionary;
+Bot bot;
 
 void setup() {
+  size(400, 400);
   dictionary = new StringList(loadStrings("words.txt"));
   StringList solutions = new StringList(loadStrings("solutions.txt"));
   
-  /*int opt = 10;
-  for (Strategy strat : Strategy.values()) {
-    println(strat);
-    Node root = createTree(solutions, strat, opt);
-    root.printInfo();
-    saveTree(root, "data/root" + strat + opt + ".json");
-  }*/
+  // Uncomment this to create and save a tree
+  // Node root = createTree(solutions, Strategy.ENTROPY, 10);
+  // saveTree(root, "data/rootENTROPY10.json");
   
   Node root = loadTree("rootENTROPY10.json", solutions);
   root.printInfo();
-  int[] clues = {14, 41};
-  for (int clue : clues) {
-    root = root.children[clue];
-    println(root.guess);
-  }
-  println(root.solutions);
+  
+  bot = new Bot(root.children[0].children[0]);
+  println(bot.possibleClues);
+  bot.display();
+}
+
+void draw() {
+}
+
+void keyPressed() {
+  bot.keyPressed();
+  bot.display();
 }

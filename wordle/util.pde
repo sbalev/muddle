@@ -23,6 +23,20 @@ static int clue(String guess, String solution) {
   return score;
 }
 
+boolean samePrefix(int clue1, int clue2, int pos) {
+  for (int i = 0; i < pos; i++) {
+    if (clue1 % 3 != clue2 % 3) return false;
+    clue1 /= 3;
+    clue2 /= 3;
+  }
+  return true;
+}
+
+int digit(int clue, int pos) {
+  for (int i = 0; i < pos; i++) clue /= 3;
+  return clue % 3;
+}
+
 
 static StringList[] splitSolutions(String guess, StringList solutions) {
   StringList[] split = new StringList[CLUE_COUNT];
