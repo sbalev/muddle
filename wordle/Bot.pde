@@ -130,7 +130,8 @@ class Bot {
     float toDiscover = log(node.solutions.size()) / log(2);
     float expected = -Strategy.ENTROPY.eval(node.guess, node.solutions);
     float left = toDiscover - expected;
-    String s = String.format("%.2f-%.2f=%.2f",toDiscover, expected, left);
+    String s = String.format("%5d|%5.2f-%.2f=%.2f",node.solutions.size(),
+      toDiscover, expected, left);
     fill(0);
     textFont(smallFont);
     textAlign(LEFT, CENTER);

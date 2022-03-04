@@ -7,7 +7,7 @@ StringList dictionary;
 Bot bot;
 
 void setup() {
-  size(600, 1000);
+  size(620, 1000);
   dictionary = new StringList(loadStrings("words.txt"));
   
   // Uncomment this to create and save a tree. Don't forget to set evalBonus to true
