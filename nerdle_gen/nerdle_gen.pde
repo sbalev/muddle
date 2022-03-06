@@ -10,6 +10,7 @@ void setup() {
       }
     }
   }
+  println(solutions.size());
 
   // a op b op c
   for (int a = 1; a <= 99; a++) {
@@ -26,6 +27,8 @@ void setup() {
 
   println(solutions.size());
   //saveStrings("words.txt", solutions.array());
+  
+  //println(equalsPos());
 }
 
 int eval(int a, char op, int b) {
