@@ -12,6 +12,12 @@ class Node {
     children = new Node[CLUE_COUNT - 1];
     init(strat.bestGuess(dictionary, solutions), strat);
   }
+  
+  Node(String guess, StringList solutions, Strategy strat) {
+    this.solutions = solutions;
+    children = new Node[CLUE_COUNT - 1];
+    init(guess, strat);
+  }
 
   void init(String guess, Strategy strat) {
     this.guess = guess;
